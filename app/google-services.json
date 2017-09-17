@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "357896876079",
+    "firebase_url": "https://hollarena-23a3c.firebaseio.com",
+    "project_id": "hollarena-23a3c",
+    "storage_bucket": "hollarena-23a3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357896876079:android:b0b48774fc6104ab",
+        "android_client_info": {
+          "package_name": "hollarena.bernard.com.hollarena"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357896876079-qos70pef9mibg6jfrramh1h4skpvg90d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hollarena.bernard.com.hollarena",
+            "certificate_hash": "24dcdac5ad2767d1027f116baca48b1b81ef5e0f"
+          }
+        },
+        {
+          "client_id": "357896876079-dqg08knqtds80v0iopvngr4l4ndu7d1m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKX9OhE2KHjGFwM_5lAYChy6UXOo7p5UE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357896876079-dqg08knqtds80v0iopvngr4l4ndu7d1m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Hollarena</string>
+    <string name="register">Register</string>
+    <string name="email">Email :</string>
+    <string name="phone_number">Phone Number :</string>
+    <string name="sex">Gender :</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_dob">19/11/89</string>
+    <string name="btn_sign_up">Submit</string>
+    <string name="btn_link_login">Link</string>
+    <string name="latitude_string">Latitude:</string>
+    <string name="longitude_string">Longitude:</string>
+    <string name="auth_failed">Authentication failed.</string>
+    <string name="lots_of_text">An affordable sports car almost sounds like an oxymoron, like fast traffic or entry-level luxury. Behind those zero-to-60-mph time and skidpad ratings, there’s an equally body-shaking reversal that takes place over just a few years: the cost to buy that same sports car. In some cases, the market value of a no-holds-barred daily driver can decline almost 80 percent in just four years. I always tell folks that speed can be hazardous to your health and your wealth. But sometimes that’s not quite true. When the smoke clears, and the depreciation curve flattens out to a slow-dipping straightaway, that’s when you can aim straight for what I call the sports-car sweet spot. It’s an amazing period, between the time a car sells new and when its second owner takes over, when the operating cost declines to just nickels and dimes. Depreciation is not unique to sports cars. A new-in-the-wrapper Audi A8L cost about $84,000 in 2011. That didn’t include all the options you could get on this 372-hp all-wheel-drive powerhouse. That Audi A8L has since depreciated down to $28,025, according to Black Book’s valuation for a clean example at retail as of September 14. Some primo cars, like the BMW 760Li, can go for a seven-year bender of depreciation hell and post a six-figure loss in value: the 2010 BMW 760Li we tested cost about $137,000 when new, and Black Book estimates its current retail value at $29,925. So there is a steep cliff of depreciation for nearly any new car, but it’s worth noting that even those with a sports-car soul are not immune to this market phenomenon. Finding them at the right time is key. The less expensive sports cars, such as the 2012 Mazda MX-5 Miata and the 2012 BMW Z4 SDrive 28i, typically only experience about three years of depreciation before they settle in to an unusually attractive sports-car sweet spot.</string>
+    <string name="title_activity_general">GeneralActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="btn_forgot_password">Forgot Password?</string>
+    <string name="btn_link_to_register">Not a member? Get registered with Hollarena.</string>
+    <string name="btn_login">Login</string>
+    <string name="hint_email">Email Id</string>
+    <string name="minimum_password">Password too short, enter minimum 4 characters!</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_reset_password">Reset Password.</string>
+    <string name="forgot_password_msg">Enter your registered email address.</string>
+    <string name="lbl_forgot_password">Forgot Password?</string>
+    <string name="btn_link_to_login">Already Registered. Log me in.</string>
+    <string name="click_to_sign_out">Click to Sign Out</string>
+</resources>
