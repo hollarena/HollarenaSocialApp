@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 
 import java.util.ArrayList;
@@ -7,6 +7,15 @@ public class UserModel {
     String userName,key;
     ArrayList<String> interestList;
     double latitude,longitude;
+    double timeInMillis;
+
+    public double getTimeInMillis() {
+        return timeInMillis;
+    }
+
+    public void setTimeInMillis(double timeInMillis) {
+        this.timeInMillis = timeInMillis;
+    }
 
     public double getLatitude() {
         return latitude;

@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +23,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reset_password);
+        setContentView(com.bernard.hollarena.R.layout.activity_reset_password);
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
-        btnBack = (Button) findViewById(R.id.btn_back);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        inputEmail = (EditText) findViewById(com.bernard.hollarena.R.id.email);
+        btnReset = (Button) findViewById(com.bernard.hollarena.R.id.btn_reset_password);
+        btnBack = (Button) findViewById(com.bernard.hollarena.R.id.btn_back);
+        progressBar = (ProgressBar) findViewById(com.bernard.hollarena.R.id.progressBar);
 
         auth = FirebaseAuth.getInstance();
 

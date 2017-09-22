@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,9 +35,9 @@ public class WordpressActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wordpress);
+        setContentView(com.bernard.hollarena.R.layout.activity_wordpress);
 
-        postList = (ListView)findViewById(R.id.postList);
+        postList = (ListView)findViewById(com.bernard.hollarena.R.id.postList);
         progressDialog = new ProgressDialog(WordpressActivity.this);
         progressDialog.setMessage("Loading...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

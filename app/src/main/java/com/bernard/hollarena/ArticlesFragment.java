@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -46,7 +46,7 @@ public class ArticlesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     String url = "http://hollarena.com.ng/wp-json/wp/v2/posts?filter[posts_per_page]=10&fields=id,title";
-    List<Object> list;
+    List list;
     Gson gson;
     ProgressDialog progressDialog;
     ListView postList;
@@ -91,8 +91,8 @@ public class ArticlesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_articles, container, false);
-        postList = (ListView)view.findViewById(R.id.postList);
+        View view = inflater.inflate(com.bernard.hollarena.R.layout.fragment_articles, container, false);
+        postList = (ListView)view.findViewById(com.bernard.hollarena.R.id.postList);
         progressDialog = new ProgressDialog(ArticlesFragment.this.getActivity());
         progressDialog.setMessage("Loading...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -111,7 +111,7 @@ public class ArticlesFragment extends Fragment {
                     postTitle[i] = (String) mapTitle.get("rendered");
                 }
 
-                postList.setAdapter(new ArrayAdapter(ArticlesFragment.this.getActivity(),android.R.layout.simple_list_item_1,postTitle));
+                postList.setAdapter(new ArrayAdapter<>(ArticlesFragment.this.getActivity(),android.R.layout.simple_list_item_1,postTitle));
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {

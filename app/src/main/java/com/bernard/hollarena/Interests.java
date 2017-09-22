@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 /**
  * Created by Raani on 9/11/2017.

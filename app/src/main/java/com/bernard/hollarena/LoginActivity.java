@@ -1,9 +1,9 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
 
     @Override
     public void onBackPressed() {
@@ -42,14 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // set the view now
-        setContentView(R.layout.activity_login);
+        setContentView(com.bernard.hollarena.R.layout.activity_login);
 
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
+        inputEmail = (EditText) findViewById(com.bernard.hollarena.R.id.email);
+        inputPassword = (EditText) findViewById(com.bernard.hollarena.R.id.password);
+        progressBar = (ProgressBar) findViewById(com.bernard.hollarena.R.id.progressBar);
+        Button btnSignup = (Button) findViewById(com.bernard.hollarena.R.id.btn_signup);
+        Button btnLogin = (Button) findViewById(com.bernard.hollarena.R.id.btn_login);
+        Button btnReset = (Button) findViewById(com.bernard.hollarena.R.id.btn_reset_password);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -98,9 +97,9 @@ public class LoginActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     // there was an error
                                     if (password.length() < 4) {
-                                        inputPassword.setError(getString(R.string.minimum_password));
+                                        inputPassword.setError(getString(com.bernard.hollarena.R.string.minimum_password));
                                     } else {
-                                        Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, getString(com.bernard.hollarena.R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
                                     Intent intent = new Intent(LoginActivity.this, LocationActivity.class);

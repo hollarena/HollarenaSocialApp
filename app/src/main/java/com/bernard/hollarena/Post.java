@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -29,12 +29,12 @@ public class Post extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.post);
+        setContentView(com.bernard.hollarena.R.layout.post);
 
         final String id = getIntent().getExtras().getString("id");
 
-        title = (TextView) findViewById(R.id.title);
-        content = (WebView)findViewById(R.id.content);
+        title = (TextView) findViewById(com.bernard.hollarena.R.id.title);
+        content = (WebView)findViewById(com.bernard.hollarena.R.id.content);
 
         progressDialog = new ProgressDialog(Post.this);
         progressDialog.setMessage("Loading...");

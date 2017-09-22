@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 //get current user interest from firebase
 //set in card view ====> actually intead of showing interest  show list articles on the interest
@@ -37,7 +37,7 @@ public class ReadArticlesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_articles);
+        setContentView(com.bernard.hollarena.R.layout.activity_read_articles);
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
@@ -46,7 +46,7 @@ public class ReadArticlesActivity extends AppCompatActivity {
 
         Log.e(TAG, "onCreate: firebase user"+firebaseUser.getDisplayName() );
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewArticles);
+        recyclerView = (RecyclerView) findViewById(com.bernard.hollarena.R.id.recyclerViewArticles);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
@@ -192,7 +192,7 @@ public class ReadArticlesActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(com.bernard.hollarena.R.id.recyclerView);
     }
 
 

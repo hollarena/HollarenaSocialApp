@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -37,7 +37,7 @@ public class RegisterActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(com.bernard.hollarena.R.layout.activity_register);
 
         initViews();
 
@@ -68,7 +68,7 @@ public class RegisterActivity extends Activity {
 
                     } else {
                         pDialog.dismiss();
-                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(com.bernard.hollarena.R.id.coordinatorLayout);
                         Snackbar snackbar = Snackbar.make(coordinatorLayout, "No Internet Connection!", Snackbar.LENGTH_SHORT);
                         snackbar.setActionTextColor(Color.WHITE);
                         snackbar.show();
@@ -133,7 +133,7 @@ public class RegisterActivity extends Activity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             pDialog.dismiss();
-                            Toast.makeText(RegisterActivity.this, R.string.auth_failed,
+                            Toast.makeText(RegisterActivity.this, com.bernard.hollarena.R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         } else{
                             setUserProfile();
@@ -159,7 +159,7 @@ public class RegisterActivity extends Activity {
                         if (!task.isSuccessful()) {
                             pDialog.dismiss();
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(RegisterActivity.this, R.string.auth_failed + " "+task.getException(),
+                            Toast.makeText(RegisterActivity.this, com.bernard.hollarena.R.string.auth_failed + " "+task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -174,12 +174,12 @@ public class RegisterActivity extends Activity {
     private void initViews() {
         mAuth = FirebaseAuth.getInstance();
 
-        mUserName = (EditText)findViewById(R.id.signup_user_name);
-        mEmailEdit = (EditText) findViewById(R.id.signup_input_email);
-        mPhoneEdit = (EditText) findViewById(R.id.register_phone_number);
-        mPasswordEdit = (EditText) findViewById(R.id.signup_input_password);
-        mButtonSubmit = (Button) findViewById(R.id.btn_submit);
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
+        mUserName = (EditText)findViewById(com.bernard.hollarena.R.id.signup_user_name);
+        mEmailEdit = (EditText) findViewById(com.bernard.hollarena.R.id.signup_input_email);
+        mPhoneEdit = (EditText) findViewById(com.bernard.hollarena.R.id.register_phone_number);
+        mPasswordEdit = (EditText) findViewById(com.bernard.hollarena.R.id.signup_input_password);
+        mButtonSubmit = (Button) findViewById(com.bernard.hollarena.R.id.btn_submit);
+        btnSignIn = (Button) findViewById(com.bernard.hollarena.R.id.sign_in_button);
 
     }
 
@@ -248,6 +248,7 @@ public class RegisterActivity extends Activity {
     }
     @Override
     public void onBackPressed() {
+        finish();
     }
 
 }

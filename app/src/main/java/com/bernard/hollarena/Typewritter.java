@@ -1,11 +1,10 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class Typewritter extends TextView {
+public class Typewritter extends android.support.v7.widget.AppCompatTextView {
 
     private CharSequence mText;
     private int mIndex;

@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new UserViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_item,parent,false));
+        return new UserViewHolder(LayoutInflater.from(parent.getContext()).inflate(com.bernard.hollarena.R.layout.view_item,parent,false));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         TextView textname;
         public UserViewHolder(View itemView) {
             super(itemView);
-            textname = (TextView) itemView.findViewById(R.id.text_name);
+            textname = (TextView) itemView.findViewById(com.bernard.hollarena.R.id.text_name);
         }
     }
 

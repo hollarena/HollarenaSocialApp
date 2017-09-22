@@ -1,5 +1,7 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +23,18 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Calendar;
+
+import static android.content.ContentValues.TAG;
 
 public class GeneralActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -42,58 +55,111 @@ public class GeneralActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_general);
+        setContentView(com.bernard.hollarena.R.layout.activity_general);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mReference = mDatabase.getReference();
-        mDatabase.getReference().keepSynced(true);
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        initFirebase();
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(com.bernard.hollarena.R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
-        TextView nav_user = (TextView)hView.findViewById(R.id.username);
+        TextView nav_user = (TextView)hView.findViewById(com.bernard.hollarena.R.id.username);
         nav_user.setText(firebaseUser.getDisplayName());
 
-        TextView nav_user_email = (TextView)hView.findViewById(R.id.email);
+        TextView nav_user_email = (TextView)hView.findViewById(com.bernard.hollarena.R.id.email);
         nav_user_email.setText(firebaseUser.getEmail());
 
         //set the fragment initially
         ArticlesFragment articlesFragment = new ArticlesFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,articlesFragment).commit();
+        fragmentTransaction.replace(com.bernard.hollarena.R.id.fragment_container,articlesFragment).commit();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(com.bernard.hollarena.R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(com.bernard.hollarena.R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                boolean isPremium = checkMembership();
+                if (isPremium) {
+                    //implement chat
+                    startActivity(new Intent(GeneralActivity.this,UserListActivity.class));
+                } else {
+                    Snackbar.make(view, "You are not premium member.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(com.bernard.hollarena.R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, com.bernard.hollarena.R.string.navigation_drawer_open, com.bernard.hollarena.R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(com.bernard.hollarena.R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+    boolean isPaid ;
+    private boolean checkMembership() {
+        mReference.child("users").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//             datasnapshot.getValue:   {Premium={reactive_time={month=8, timezoneOffset=0, time=1506122754936, minutes=25, seconds=54, hours=23, day=5, date=22, year=117}, paid=true}, Interest=false}
+
+                String json = dataSnapshot.getValue().toString();
+                try {
+                    //get time in Millis
+                    JSONObject jsonResponse = new JSONObject(json);
+                    JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.premium));
+                     isPaid = jsonPremiumResponse.getBoolean(getString(R.string.paid));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e(TAG, "onDataChange: key " + dataSnapshot.getKey());
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return isPaid;
+    }
+
+    private void initFirebase() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mReference = mDatabase.getReference();
+        mDatabase.getReference().keepSynced(true);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     private Boolean exit = false;
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(com.bernard.hollarena.R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -117,7 +183,7 @@ public class GeneralActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.general, menu);
+        getMenuInflater().inflate(com.bernard.hollarena.R.menu.general, menu);
         return true;
     }
 
@@ -129,7 +195,7 @@ public class GeneralActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == com.bernard.hollarena.R.id.action_settings) {
             return true;
         }
 
@@ -142,38 +208,38 @@ public class GeneralActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_articles) {
+        if (id == com.bernard.hollarena.R.id.nav_articles) {
             ArticlesFragment articlesFragment = new ArticlesFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,articlesFragment).commit();
+            fragmentTransaction.replace(com.bernard.hollarena.R.id.fragment_container,articlesFragment).commit();
 
-        } else if (id == R.id.nav_upgarade) {
+        } else if (id == com.bernard.hollarena.R.id.nav_upgarade) {
             UpgradeFragment upgradeFragment = new UpgradeFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,upgradeFragment).commit();
+            fragmentTransaction.replace(com.bernard.hollarena.R.id.fragment_container,upgradeFragment).commit();
 
 
-        } else if (id == R.id.nav_nearby) {
+        } else if (id == com.bernard.hollarena.R.id.nav_nearby) {
             NearByFragment nearByFragment = new NearByFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,nearByFragment).commit();
+            fragmentTransaction.replace(com.bernard.hollarena.R.id.fragment_container,nearByFragment).commit();
 
 
-        } else if (id == R.id.nav_specialpg) {
+        } else if (id == com.bernard.hollarena.R.id.nav_specialpg) {
             SpecialPageFragment specialPageFragment = new SpecialPageFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,specialPageFragment).commit();
+            fragmentTransaction.replace(com.bernard.hollarena.R.id.fragment_container,specialPageFragment).commit();
 
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == com.bernard.hollarena.R.id.nav_settings) {
             SettingsFragment settingsFragment = new SettingsFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,settingsFragment).commit();
+            fragmentTransaction.replace(com.bernard.hollarena.R.id.fragment_container,settingsFragment).commit();
 
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(com.bernard.hollarena.R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

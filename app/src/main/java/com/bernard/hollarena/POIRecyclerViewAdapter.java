@@ -1,4 +1,4 @@
-package hollarena.bernard.com.hollarena;
+package com.bernard.hollarena;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -38,7 +38,7 @@ class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter
 
     @Override
     public InterestHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_cardview, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(com.bernard.hollarena.R.layout.layout_cardview, parent, false);
         return new InterestHolder(v);
     }
 
@@ -77,17 +77,17 @@ class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter
         void setDialogue(){
             //set up dialog
             final Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.dialogue);
+            dialog.setContentView(com.bernard.hollarena.R.layout.dialogue);
             dialog.setTitle("This is my custom dialog box");
             dialog.setCancelable(true);
             //there are a lot of settings, for dialog, check them all out!
 
             //set up text
-            TextView text = (TextView) dialog.findViewById(R.id.article_text);
-            text.setText(R.string.lots_of_text);
+            TextView text = (TextView) dialog.findViewById(com.bernard.hollarena.R.id.article_text);
+            text.setText(com.bernard.hollarena.R.string.lots_of_text);
 
             //set up button
-            ImageView imageButton = (ImageView) dialog.findViewById(R.id.image_button);
+            ImageView imageButton = (ImageView) dialog.findViewById(com.bernard.hollarena.R.id.image_button);
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,9 +100,9 @@ class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter
         }
         InterestHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.cv);
-            interestName = (TextView) itemView.findViewById(R.id.interest_name);
-            interestPic = (ImageView) itemView.findViewById(R.id.interest_photo);
+            cardView = (CardView) itemView.findViewById(com.bernard.hollarena.R.id.cv);
+            interestName = (TextView) itemView.findViewById(com.bernard.hollarena.R.id.interest_name);
+            interestPic = (ImageView) itemView.findViewById(com.bernard.hollarena.R.id.interest_photo);
 
 
             cardView.setOnClickListener(new View.OnClickListener() {
