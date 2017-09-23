@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.model;
 
 
 import java.util.ArrayList;

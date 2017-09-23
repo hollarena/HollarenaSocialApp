@@ -6,7 +6,7 @@
     android:padding="16dp">
 
 
-    <hollarena.bernard.com.hollarena.Typewritter
+    <com.bernard.hollarena.Typewritter
         android:id="@+id/typewiter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

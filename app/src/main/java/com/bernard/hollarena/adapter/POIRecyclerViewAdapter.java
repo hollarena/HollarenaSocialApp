@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,11 +13,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bernard.hollarena.model.Interests;
+import com.bernard.hollarena.activity.PointOfInterestActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter.InterestHolder> implements View.OnClickListener {
+public class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter.InterestHolder> implements View.OnClickListener {
     private final Context context;
     private List<Interests> pointOfInterest;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
@@ -25,7 +28,7 @@ class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter
     private int minHeight;
     private int height;
 
-    POIRecyclerViewAdapter(Context context, List<Interests> interests) {
+    public POIRecyclerViewAdapter(Context context, List<Interests> interests) {
         this.pointOfInterest = interests;
         this.context = context;
 
@@ -64,7 +67,7 @@ class POIRecyclerViewAdapter extends RecyclerView.Adapter<POIRecyclerViewAdapter
 
     }
 
-    ArrayList getSelectedInterest() {
+    public ArrayList getSelectedInterest() {
 
         return selectedInterest;
     }

@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bernard.hollarena.activity.Post;
 import com.google.gson.Gson;
 
 import java.util.List;

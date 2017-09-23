@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.bernard.hollarena.adapter.POIRecyclerViewAdapter;
+import com.bernard.hollarena.model.Interests;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +26,7 @@ public class PointOfInterestActivity extends Activity {
     POIRecyclerViewAdapter recyclerViewAdapter;
 
     List<Interests> interests;
-    static Button submitBt;
+    public static Button submitBt;
 
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="hollarena.bernard.com.hollarena">
+    package="com.bernard.hollarena">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.billing" />
 
     <uses-feature android:name="android.hardware.location.gps" />
 
@@ -23,38 +23,35 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon"
-       >
-        <activity android:name=".RegisterActivity">
+        tools:replace="android:icon">
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.PointOfInterestActivity" />
+        <activity android:name=".activity.LocationActivity" />
+        <activity android:name=".activity.SplashScreen">
 
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            -->
         </activity>
-
-        <activity android:name=".PointOfInterestActivity" />
-        <activity android:name=".LocationActivity" />
-        <activity android:name=".SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".ReadArticlesActivity" />
-        <activity android:name=".Post" />
+        <activity android:name=".activity.Post" />
         <activity android:name=".WordpressActivity" />
         <activity
-            android:name=".GeneralActivity"
+            android:name=".activity.GeneralActivity"
             android:label="@string/title_activity_general"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>/>
+        </activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
-        <activity android:name=".ResetPasswordActivity"/>
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".activity.ResetPasswordActivity" />
+        <activity android:name=".activity.PayByPaystack" />
+        <activity android:name=".BasicActivity"></activity>
+        <activity android:name=".activity.UserListActivity"/>
+        <activity android:name=".Chat"/>
     </application>
 
 </manifest>

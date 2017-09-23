@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 
+import com.bernard.hollarena.Typewritter;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static android.content.ContentValues.TAG;

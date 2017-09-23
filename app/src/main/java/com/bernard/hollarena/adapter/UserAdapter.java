@@ -1,19 +1,25 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.adapter;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bernard.hollarena.Chat;
+import com.bernard.hollarena.model.UserDetails;
+
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private List<UserModel> list;
+    private List<String> list;
 
-    public UserAdapter(List<UserModel> result) {
+    public UserAdapter(List<String> result) {
         this.list = result;
+
 
     }
 
@@ -24,9 +30,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        UserModel userModel = list.get(position);
-        holder.textname.setText(userModel.userName);
+        holder.textname.setText(list.get(position));
+        final int pos = position;
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context c = v.getContext();
+                Intent intent = new Intent(c, Chat.class);
+                UserDetails.chatWith = list.get(pos);
 
+                c.startActivity(intent);
+
+            }
+        });
     }
 
     @Override

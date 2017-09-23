@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;

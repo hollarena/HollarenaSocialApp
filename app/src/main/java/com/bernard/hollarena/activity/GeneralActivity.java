@@ -1,7 +1,6 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +20,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bernard.hollarena.R;
+import com.bernard.hollarena.fragment.ArticlesFragment;
+import com.bernard.hollarena.fragment.NearByFragment;
+import com.bernard.hollarena.fragment.SettingsFragment;
+import com.bernard.hollarena.fragment.SpecialPageFragment;
+import com.bernard.hollarena.fragment.UpgradeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -31,8 +36,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Calendar;
 
 import static android.content.ContentValues.TAG;
 
@@ -58,6 +61,7 @@ public class GeneralActivity extends AppCompatActivity
         setContentView(com.bernard.hollarena.R.layout.activity_general);
 
         initFirebase();
+        checkMembership();
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
@@ -83,8 +87,7 @@ public class GeneralActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isPremium = checkMembership();
-                if (isPremium) {
+                if (checkMembership()) {
                     //implement chat
                     startActivity(new Intent(GeneralActivity.this,UserListActivity.class));
                 } else {
@@ -112,16 +115,18 @@ public class GeneralActivity extends AppCompatActivity
 //             datasnapshot.getValue:   {Premium={reactive_time={month=8, timezoneOffset=0, time=1506122754936, minutes=25, seconds=54, hours=23, day=5, date=22, year=117}, paid=true}, Interest=false}
 
                 String json = dataSnapshot.getValue().toString();
-                try {
-                    //get time in Millis
-                    JSONObject jsonResponse = new JSONObject(json);
-                    JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.premium));
-                     isPaid = jsonPremiumResponse.getBoolean(getString(R.string.paid));
+                if (dataSnapshot.getKey().equals(firebaseUser.getDisplayName())) {
+                    try {
+                        //get time in Millis
+                        JSONObject jsonResponse = new JSONObject(json);
+                        JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.premium));
+                        isPaid = jsonPremiumResponse.getBoolean(getString(R.string.paid));
+                        Log.e(TAG, "onChildAdded: json ==> " + json + " premium response " + jsonPremiumResponse + " isPaid " + isPaid);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
             }
 
             @Override

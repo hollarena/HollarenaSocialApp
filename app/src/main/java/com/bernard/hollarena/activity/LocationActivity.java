@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

@@ -48,4 +48,22 @@
     <string name="lbl_forgot_password">Forgot Password?</string>
     <string name="btn_link_to_login">Already Registered. Log me in.</string>
     <string name="click_to_sign_out">Click to Sign Out</string>
+    <string name="_50_naira_day">50 Naira/day</string>
+    <string name="_300_naira_week">300 Naira/week</string>
+    <string name="_1000_naira_month">1000 Naira/month</string>
+    <string name="card_number">Card Number</string>
+    <string name="cvv">CVV</string>
+    <string name="mm">MM</string>
+    <string name="yyyy">YYYY</string>
+    <string name="no_transaction_yet">No transaction yet</string>
+    <string name="intent_key_no_of_days">noOfDays</string>
+    <string name="paystack_public_key">pk_test_04614b10c35b4f00c62a9769003bbea1f69e4534</string>
+    <string name="you_are_not_premium_member_select_package_to_become_member">You are not premium member.Select package to become member.</string>
+    <string name="member_text">Congratulations!!You are already premium member</string>
+    <string name="users">users</string>
+    <string name="premium">Premium</string>
+    <string name="paid">paid</string>
+    <string name="reactive_time">reactive_time</string>
+    <string name="time">time</string>
+    <string name="user_image">user image</string>
 </resources>

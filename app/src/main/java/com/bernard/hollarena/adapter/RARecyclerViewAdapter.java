@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bernard.hollarena.ReadArticlesActivity;
 
 import java.util.List;
 

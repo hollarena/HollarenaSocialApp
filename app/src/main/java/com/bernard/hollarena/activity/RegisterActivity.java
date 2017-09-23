@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 
 import android.app.Activity;
 import android.content.Intent;

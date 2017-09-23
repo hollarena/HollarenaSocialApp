@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

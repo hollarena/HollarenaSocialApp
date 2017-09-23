@@ -1,13 +1,42 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hollarena.hollarena.UpgradeFragment">
+    tools:context=".fragment.UpgradeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/premium_member_text"
+        android:layout_above="@+id/day_subscription_bt"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="25dp"
+        android:text="@string/you_are_not_premium_member_select_package_to_become_member"
+        android:textColor="@color/bel_red_text"
+         />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/day_subscription_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_50_naira_day"
+        android:layout_above="@+id/week_subscription_bt"
+        android:layout_margin="20dp"
+        />
+
+    <Button
+        android:id="@+id/week_subscription_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:text="@string/_300_naira_week" />
+
+    <Button
+        android:id="@+id/month_subscription_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_1000_naira_month"
+        android:layout_below="@+id/week_subscription_bt"
+        android:layout_margin="20dp" />
+</RelativeLayout>

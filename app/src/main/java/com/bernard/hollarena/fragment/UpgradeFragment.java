@@ -1,4 +1,4 @@
-package com.bernard.hollarena;
+package com.bernard.hollarena.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.bernard.hollarena.activity.PayByPaystack;
+import com.bernard.hollarena.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -25,13 +27,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import co.paystack.android.PaystackSdk;
 
@@ -46,19 +45,18 @@ import static android.content.ContentValues.TAG;
  * Use the {@link UpgradeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UpgradeFragment extends Fragment implements BillingProcessor.IBillingHandler,View.OnClickListener {
+public class UpgradeFragment extends Fragment implements BillingProcessor.IBillingHandler, View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
-    private DatabaseReference databaseReference;
     FirebaseUser user;
-
-        BillingProcessor billingProcessor;
-    Button mDay,mWeek,mMonth;
+    BillingProcessor billingProcessor;
+    Button mDay, mWeek, mMonth;
     TextView mPremiumMemberText;
+    private DatabaseReference databaseReference;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -100,10 +98,10 @@ public class UpgradeFragment extends Fragment implements BillingProcessor.IBilli
     }
 
     private void initFireBasae() {
-            mAuth = FirebaseAuth.getInstance();
-            mDatabase = FirebaseDatabase.getInstance();
-            databaseReference = mDatabase.getReference();
-            user = mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        databaseReference = mDatabase.getReference();
+        user = mAuth.getCurrentUser();
     }
 
     @Override
@@ -114,7 +112,7 @@ public class UpgradeFragment extends Fragment implements BillingProcessor.IBilli
         mDay = (Button) view.findViewById(R.id.day_subscription_bt);
         mWeek = (Button) view.findViewById(R.id.week_subscription_bt);
         mMonth = (Button) view.findViewById(R.id.month_subscription_bt);
-        mPremiumMemberText = (TextView)view.findViewById(R.id.premium_member_text);
+        mPremiumMemberText = (TextView) view.findViewById(R.id.premium_member_text);
 
         mDay.setOnClickListener(this);
         mWeek.setOnClickListener(this);
@@ -129,43 +127,44 @@ public class UpgradeFragment extends Fragment implements BillingProcessor.IBilli
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 //             datasnapshot.getValue:   {Premium={reactive_time={month=8, timezoneOffset=0, time=1506122754936, minutes=25, seconds=54, hours=23, day=5, date=22, year=117}, paid=true}, Interest=false}
+                if (dataSnapshot.getKey().equals(user.getDisplayName())) {
+                    String json = dataSnapshot.getValue().toString();
+                    try {
+                        //get time in Millis
+                        JSONObject jsonResponse = new JSONObject(json);
+                        JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.premium));
+                        JSONObject jsonTimeResponse = jsonPremiumResponse.getJSONObject(getString(R.string.reactive_time));
+                        Long storedTime = jsonTimeResponse.getLong(getString(R.string.time));
+                        Log.e(TAG, "onChildAdded: stored time===>> " + storedTime);
 
-                String json = dataSnapshot.getValue().toString();
-                try {
-                    //get time in Millis
-                    JSONObject jsonResponse = new JSONObject(json);
-                    JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.premium));
-                    JSONObject jsonTimeResponse = jsonPremiumResponse.getJSONObject(getString(R.string.reactive_time));
-                    Long storedTime = jsonTimeResponse.getLong(getString(R.string.time));
-                    Log.e(TAG, "onChildAdded: stored time===>> "+storedTime );
+                        //compare stored time to current time to set button
+                        Calendar calendar = Calendar.getInstance();
+                        Long currenttime = calendar.getTimeInMillis();
+                        if (currenttime.compareTo(storedTime) >= 0) {
+                            Log.e(TAG, "onChildAdded: time completed  " + currenttime);
+                            mDay.setEnabled(true);
+                            mWeek.setEnabled(true);
+                            mMonth.setEnabled(true);
+                            mPremiumMemberText.setText(R.string.you_are_not_premium_member_select_package_to_become_member);
+                            mPremiumMemberText.setTextColor(Color.RED);
+                            // again set back value of premium membership to false.
+                            databaseReference.child(getString(R.string.users)).child(user.getDisplayName()).child(getString(R.string.premium)).child(getString(R.string.paid)).setValue(false);
 
-                    //compare stored time to current time to set button
-                    Calendar calendar = Calendar.getInstance();
-                    Long currenttime = calendar.getTimeInMillis();
-                    if (currenttime.compareTo(storedTime)>=0){
-                        Log.e(TAG, "onChildAdded: time completed  "+currenttime);
-                        mDay.setEnabled(true);
-                        mWeek.setEnabled(true);
-                        mMonth.setEnabled(true);
-                        mPremiumMemberText.setText(R.string.you_are_not_premium_member_select_package_to_become_member);
-                        mPremiumMemberText.setTextColor(Color.RED);
-                        // again set back value of premium membership to false.
-                        databaseReference.child(getString(R.string.users)).child(user.getDisplayName()).child(getString(R.string.premium)).child(getString(R.string.paid)).setValue(false);
+                        } else {
+                            Log.e(TAG, "onChildAdded: time not completed  " + currenttime);
+                            mDay.setEnabled(false);
+                            mWeek.setEnabled(false);
+                            mMonth.setEnabled(false);
+                            mPremiumMemberText.setText(R.string.member_text);
+                            mPremiumMemberText.setTextColor(Color.GREEN);
 
-                    } else {
-                        Log.e(TAG, "onChildAdded: time not completed  " + currenttime);
-                        mDay.setEnabled(false);
-                        mWeek.setEnabled(false);
-                        mMonth.setEnabled(false);
-                        mPremiumMemberText.setText(R.string.member_text);
-                        mPremiumMemberText.setTextColor(Color.GREEN);
-
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
                 }
+            }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -237,20 +236,23 @@ public class UpgradeFragment extends Fragment implements BillingProcessor.IBilli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.day_subscription_bt:startPaymentActivity(1);
+        switch (v.getId()) {
+            case R.id.day_subscription_bt:
+                startPaymentActivity(1);
                 break;
 
-            case R.id.week_subscription_bt:startPaymentActivity(7);
+            case R.id.week_subscription_bt:
+                startPaymentActivity(7);
                 break;
-            case R.id.month_subscription_bt:startPaymentActivity(30);
+            case R.id.month_subscription_bt:
+                startPaymentActivity(30);
         }
     }
 
     private void startPaymentActivity(int noOfDay) {
 
         Intent putValueIntent = new Intent(getActivity(), PayByPaystack.class);
-        putValueIntent.putExtra(String.valueOf(R.string.intent_key_no_of_days),noOfDay);
+        putValueIntent.putExtra(String.valueOf(R.string.intent_key_no_of_days), noOfDay);
         startActivity(putValueIntent);
 
     }
