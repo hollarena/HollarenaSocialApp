@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+<de.hdodenhof.circleimageview.CircleImageView
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:src="@drawable/ded"
+    android:layout_marginTop="101dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/circleImageView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/display_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/circleImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
+        android:freezesText="false"
+        android:includeFontPadding="false"
+        android:text="Display Name"
+        android:textColor="@color/blue"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/email_id_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/display_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:text="Email Id"
+        android:textColor="@color/blue" />
+
+    <TextView
+        android:id="@+id/premium_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="81dp"
+        android:text="You are not premium member"
+        android:textColor="@color/btn_logut_bg" />
+</RelativeLayout>
