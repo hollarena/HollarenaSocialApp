@@ -14,7 +14,7 @@ import com.bernard.hollarena.ReadArticlesActivity;
 
 import java.util.List;
 
-class RARecyclerViewAdapter extends RecyclerView.Adapter<RARecyclerViewAdapter.InterestHolder> implements View.OnClickListener {
+public class RARecyclerViewAdapter extends RecyclerView.Adapter<RARecyclerViewAdapter.InterestHolder> implements View.OnClickListener {
 private final Context context;
     List<String> articles;
 

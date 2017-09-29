@@ -26,25 +26,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import co.paystack.android.PaystackSdk;
 
 import static android.content.ContentValues.TAG;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link UpgradeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link UpgradeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UpgradeFragment extends Fragment implements BillingProcessor.IBillingHandler, View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,23 +62,6 @@ public class UpgradeFragment extends Fragment implements BillingProcessor.IBilli
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UpgradeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UpgradeFragment newInstance(String param1, String param2) {
-        UpgradeFragment fragment = new UpgradeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,39 +104,39 @@ public class UpgradeFragment extends Fragment implements BillingProcessor.IBilli
         databaseReference.child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//             datasnapshot.getValue:   {Premium={reactive_time={month=8, timezoneOffset=0, time=1506122754936, minutes=25, seconds=54, hours=23, day=5, date=22, year=117}, paid=true}, Interest=false}
-                if (dataSnapshot.getKey().equals(user.getDisplayName())) {
+                if (dataSnapshot.getKey().equals(user.getUid())) {
                     String json = dataSnapshot.getValue().toString();
                     try {
                         //get time in Millis
                         JSONObject jsonResponse = new JSONObject(json);
-                        JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.premium));
-                        JSONObject jsonTimeResponse = jsonPremiumResponse.getJSONObject(getString(R.string.reactive_time));
-                        Long storedTime = jsonTimeResponse.getLong(getString(R.string.time));
-                        Log.e(TAG, "onChildAdded: stored time===>> " + storedTime);
+                        Log.e(TAG, "onChildAdded: ============>jsonResponse "+jsonResponse );
 
-                        //compare stored time to current time to set button
-                        Calendar calendar = Calendar.getInstance();
-                        Long currenttime = calendar.getTimeInMillis();
-                        if (currenttime.compareTo(storedTime) >= 0) {
-                            Log.e(TAG, "onChildAdded: time completed  " + currenttime);
-                            mDay.setEnabled(true);
-                            mWeek.setEnabled(true);
-                            mMonth.setEnabled(true);
-                            mPremiumMemberText.setText(R.string.you_are_not_premium_member_select_package_to_become_member);
-                            mPremiumMemberText.setTextColor(Color.RED);
-                            // again set back value of premium membership to false.
-                            databaseReference.child(getString(R.string.users)).child(user.getDisplayName()).child(getString(R.string.premium)).child(getString(R.string.paid)).setValue(false);
-
-                        } else {
-                            Log.e(TAG, "onChildAdded: time not completed  " + currenttime);
+                        JSONObject jsonPremiumResponse = jsonResponse.getJSONObject(getString(R.string.db_key_Premium));
+                        if (jsonPremiumResponse.has(getString(R.string.db_key_timestamp))){
+                        Long storedTime = jsonPremiumResponse.getLong(getString(R.string.db_key_timestamp));
+                        Long currentTime = System.currentTimeMillis();
+                        if (currentTime>=storedTime){
+                            Log.e(TAG, "onChildAdded: ============> has true" );
+                            Log.e(TAG, "onChildAdded: time not completed  " );
                             mDay.setEnabled(false);
                             mWeek.setEnabled(false);
                             mMonth.setEnabled(false);
                             mPremiumMemberText.setText(R.string.member_text);
                             mPremiumMemberText.setTextColor(Color.GREEN);
 
+                        } else {
+                            Log.e(TAG, "onChildAdded: time completed  ");
+                            mDay.setEnabled(true);
+                            mWeek.setEnabled(true);
+                            mMonth.setEnabled(true);
+                            mPremiumMemberText.setText(R.string.you_are_not_premium_member_select_package_to_become_member);
+                            mPremiumMemberText.setTextColor(Color.RED);
+                            databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_Premium)).child(getString(R.string.db_key_isPaid)).setValue(false);
+                            databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_Premium)).child(getString(R.string.db_key_timestamp)).removeValue();
                         }
+
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

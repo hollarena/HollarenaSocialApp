@@ -1,7 +1,9 @@
 package com.bernard.hollarena.fragment;
 
-import android.content.Context;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,136 +11,231 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bernard.hollarena.activity.LoginActivity;
+import com.bernard.hollarena.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
+
+import static android.R.attr.bitmap;
+import static android.app.Activity.RESULT_OK;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SettingsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SettingsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final int GALLARY_PIC = 1;
+    FirebaseAuth mAuth;
+    FirebaseDatabase mDatabase;
+    FirebaseUser mFireBaseUSer;
+    DatabaseReference mRef;
 
-    private OnFragmentInteractionListener mListener;
-    FirebaseAuth auth;
+    StorageReference mStorageReference;
+
+    CircleImageView mProfileImage;
+    private ProgressDialog mProgressDialog;
 
     public SettingsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(com.bernard.hollarena.R.layout.fragment_settings, container, false);
-        Button signOut = (Button) view.findViewById(com.bernard.hollarena.R.id.sign_out_button);
-        auth = FirebaseAuth.getInstance();
 
-        signOut.setOnClickListener(new View.OnClickListener() {
+        final View view = inflater.inflate(com.bernard.hollarena.R.layout.fragment_settings, container, false);
+
+        mFireBaseUSer = FirebaseAuth.getInstance().getCurrentUser();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+        mRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.db_key_users)).child(mFireBaseUSer.getUid());
+
+        TextView mDisplayNameText, mEmailText;
+        CircleImageView mEditImage;
+
+        mDisplayNameText = (TextView) view.findViewById(R.id.display_name);
+        mEmailText = (TextView) view.findViewById(R.id.email_id_text);
+        mEditImage = (CircleImageView) view.findViewById(R.id.edit_image);
+        mProfileImage = (CircleImageView) view.findViewById(R.id.profile_image);
+
+        mDisplayNameText.setText(mFireBaseUSer.getDisplayName());
+        mEmailText.setText(mFireBaseUSer.getEmail());
+
+        mRef.keepSynced(true);
+        mRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                auth.signOut();
-                startActivity(new Intent(SettingsFragment.this.getActivity(), LoginActivity.class));
-getActivity().finish();
-                Toast.makeText(SettingsFragment.this.getActivity(),"onClick" + auth, Toast.LENGTH_LONG).show();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null && dataSnapshot.child(getString(R.string.db_key_image)).getValue() != null) {
+                    final String image = dataSnapshot.child(getString(R.string.db_key_image)).getValue().toString();
+//                    Picasso.with(SettingsFragment.this.getActivity()).load(image).placeholder(R.drawable.default_avatar).into(mProfileImage);
+                    Picasso.with(SettingsFragment.this.getActivity()).load(image)
+                            .networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.default_avatar)
+                            .into(mProfileImage, new Callback() {
+                                @Override
+                                public void onSuccess() {
 
-                // this listener will be called when there is change in firebase user session
-                FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user == null) {
-                            // user auth state is changed - user is null
-                            // launch login activity
-                            Toast.makeText(SettingsFragment.this.getActivity(),"user = null", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(SettingsFragment.this.getActivity(), LoginActivity.class));
-                            getActivity().finish();
-                        }
-                    }
-                };
+                                }
+
+                                @Override
+                                public void onError() {
+                                    Picasso.with(SettingsFragment.this.getActivity()).load(image).placeholder(R.drawable.default_avatar).into(mProfileImage);
+
+                                }
+                            });
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
+        mEditImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLARY_PIC);
+
+//                CropImage.activity().setGuidelines(CropImageView.Guidelines.ON)
+//                        .start(getContext(),SettingsFragment.this);
+            }
+        });
+
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLARY_PIC && resultCode == RESULT_OK) {
+            Uri imageURI = data.getData();
+            CropImage.activity(imageURI)
+                    .setAspectRatio(1, 1)
+                    .setMinCropWindowSize(500, 500)
+                    .start(getContext(), SettingsFragment.this);
+        }
+
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                mProgressDialog = new ProgressDialog(SettingsFragment.this.getActivity());
+                mProgressDialog.setTitle("Uploading image...");
+                mProgressDialog.setMessage("Please wait while we upload your profile pic.");
+                mProgressDialog.setCancelable(false);
+
+                Uri resultUri = result.getUri();
+
+                File thumb_filePath = new File(resultUri.getPath());
+                try {
+
+                    Bitmap thumb_bitmap = new Compressor(SettingsFragment.this.getActivity())
+                            .setMaxWidth(200)
+                            .setMaxHeight(200)
+                            .setQuality(80)
+                            .compressToBitmap(thumb_filePath);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    final byte[] thumb_byte = baos.toByteArray();
+
+
+                    StorageReference filePath = mStorageReference.child("profile_images").child(mFireBaseUSer.getUid() + ".jpg");
+                    final StorageReference thumb_filepath = mStorageReference.child("profile_images").child("thumbs").child(randomVal() + ".jpg");
+
+                    filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                            if (task.isSuccessful()) {
+                                Toast.makeText(SettingsFragment.this.getActivity(), "Profile pic changed", Toast.LENGTH_SHORT).show();
+                                final String download_url = task.getResult().getDownloadUrl().toString();
+
+                                UploadTask uploadTask = thumb_filepath.putBytes(thumb_byte);
+                                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
+                                        String thumb_downloadurl = thumb_task.getResult().getDownloadUrl().toString();
+                                        if (thumb_task.isSuccessful()) {
+
+                                            Map update_hashmap = new HashMap();
+                                            update_hashmap.put(getString(R.string.db_key_image), download_url);
+                                            update_hashmap.put("thumb_image", thumb_downloadurl);
+
+                                            mRef.updateChildren(update_hashmap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        mProgressDialog.dismiss();
+
+                                                    } else {
+                                                        mProgressDialog.dismiss();
+                                                        Toast.makeText(SettingsFragment.this.getActivity(), "Can't upload. Please try again.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    private String randomVal() {
+
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(5);
+        char tempChar;
+        for (int i = 0; i < randomLength; i++) {
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
         }
-    }
+        return randomStringBuilder.toString();
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

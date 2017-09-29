@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.bernard.hollarena.R;
 import com.bernard.hollarena.adapter.POIRecyclerViewAdapter;
 import com.bernard.hollarena.model.Interests;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ public class PointOfInterestActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.bernard.hollarena.R.layout.activity_interest_rv);
+        setContentView(R.layout.activity_interest_rv);
 
         initViews();
         String name =" ";
@@ -79,9 +80,11 @@ public class PointOfInterestActivity extends Activity {
 
                 //storage firebase : email,phone,gender,interest,location
                 //// TODO: 9/11/2017  firebase storage
-
-                databaseReference.child("users").child(user.getDisplayName()).child("Interest").setValue(recyclerViewAdapter.getSelectedInterest());
-                databaseReference.child("users").child(user.getDisplayName()).child("Premium").setValue(false);
+                databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_name)).setValue(user.getDisplayName());
+                databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_email)).setValue(user.getEmail());
+                databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_interest)).setValue(recyclerViewAdapter.getSelectedInterest());
+                databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_Premium)).setValue(false);
+                databaseReference.child(getString(R.string.db_key_users)).child(user.getUid()).child(getString(R.string.db_key_thumb_image)).setValue("https://upload.wikimedia.org/wikipedia/commons/1/1e/Default-avatar.jpg");
 
                 startActivity(new Intent(PointOfInterestActivity.this,LocationActivity.class));
 
@@ -107,13 +110,13 @@ public class PointOfInterestActivity extends Activity {
 
     private void initializeData() {
         interests = new ArrayList<>();
-        interests.add(new Interests("Car ", com.bernard.hollarena.R.drawable.motorcyclecar));
-        interests.add(new Interests("Fashion", com.bernard.hollarena.R.drawable.fashion));
-        interests.add(new Interests("Home Decor", com.bernard.hollarena.R.drawable.homedecor));
-        interests.add(new Interests("Music", com.bernard.hollarena.R.drawable.music));
-        interests.add(new Interests("Food", com.bernard.hollarena.R.drawable.spices));
-        interests.add(new Interests("Tattos", com.bernard.hollarena.R.drawable.tattos));
-        interests.add(new Interests("Wedding", com.bernard.hollarena.R.drawable.wedding));
+        interests.add(new Interests("Car ", R.drawable.motorcyclecar));
+        interests.add(new Interests("Fashion", R.drawable.fashion));
+        interests.add(new Interests("Home Decor", R.drawable.homedecor));
+        interests.add(new Interests("Music", R.drawable.music));
+        interests.add(new Interests("Food", R.drawable.spices));
+        interests.add(new Interests("Tattos", R.drawable.tattos));
+        interests.add(new Interests("Wedding", R.drawable.wedding));
 
 
     }
@@ -124,8 +127,8 @@ public class PointOfInterestActivity extends Activity {
         mDatabase = FirebaseDatabase.getInstance();
         databaseReference = mDatabase.getReference();
 
-        recyclerView = (RecyclerView) findViewById(com.bernard.hollarena.R.id.recyclerView);
-        submitBt = (Button) findViewById(com.bernard.hollarena.R.id.next_bt);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        submitBt = (Button) findViewById(R.id.next_bt);
     }
 
 

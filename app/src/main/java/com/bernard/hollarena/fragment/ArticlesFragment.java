@@ -51,8 +51,8 @@ public class ArticlesFragment extends Fragment {
     Gson gson;
     ProgressDialog progressDialog;
     ListView postList;
-    Map<String,Object> mapPost;
-    Map<String,Object> mapTitle;
+    Map<String, Object> mapPost;
+    Map<String, Object> mapTitle;
     int postID;
     String postTitle[];
     String TAG = "TAG";
@@ -93,7 +93,7 @@ public class ArticlesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(com.bernard.hollarena.R.layout.fragment_articles, container, false);
-        postList = (ListView)view.findViewById(com.bernard.hollarena.R.id.postList);
+        postList = (ListView) view.findViewById(com.bernard.hollarena.R.id.postList);
         progressDialog = new ProgressDialog(ArticlesFragment.this.getActivity());
         progressDialog.setMessage("Loading...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -106,13 +106,13 @@ public class ArticlesFragment extends Fragment {
                 list = (List) gson.fromJson(s, List.class);
                 postTitle = new String[list.size()];
 
-                for(int i=0;i<list.size();++i){
-                    mapPost = (Map<String,Object>)list.get(i);
+                for (int i = 0; i < list.size(); ++i) {
+                    mapPost = (Map<String, Object>) list.get(i);
                     mapTitle = (Map<String, Object>) mapPost.get("title");
                     postTitle[i] = (String) mapTitle.get("rendered");
                 }
-
-                postList.setAdapter(new ArrayAdapter<>(ArticlesFragment.this.getActivity(),android.R.layout.simple_list_item_1,postTitle));
+                if (postTitle != null)
+                    postList.setAdapter(new ArrayAdapter<>(ArticlesFragment.this.getActivity(), android.R.layout.simple_list_item_1, postTitle));
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -128,23 +128,16 @@ public class ArticlesFragment extends Fragment {
         postList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mapPost = (Map<String,Object>)list.get(position);
-                postID = ((Double)mapPost.get("id")).intValue();
+                mapPost = (Map<String, Object>) list.get(position);
+                postID = ((Double) mapPost.get("id")).intValue();
 
-                Intent intent = new Intent(ArticlesFragment.this.getActivity(),Post.class);
-                intent.putExtra("id", ""+postID);
+                Intent intent = new Intent(ArticlesFragment.this.getActivity(), Post.class);
+                intent.putExtra("id", "" + postID);
                 startActivity(intent);
             }
         });
 
-        return  view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        return view;
     }
 
     @Override

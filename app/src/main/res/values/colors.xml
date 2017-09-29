@@ -3,8 +3,9 @@
     <color name="colorPrimary">#00bcd4</color>
     <color name="appColor">#884EA0</color>
     <color name="white">#ffffff</color>
-    <color name="grey">#898888</color>
-    <color name="blue">#33ccff</color>
+    <color name="grey">#e0e0e0</color>
+    <color name="light_grey">#FFE0E0E0</color>
+    <color name="blue">#0db8f1</color>
     <color name="login_button_background">#0f0f0f</color>
     <color name="colorBackground">#d21c5e</color>
     <color name="transparentOpacity">#3d000000</color>
@@ -22,5 +23,6 @@
 <color name="btn_login">#26ae90</color>
 <color name="btn_login_bg">#eceef1</color>
 <color name="lbl_name">#333333</color>
-<color name="btn_logut_bg">#ff6861</color>
+<color name="btn_logut_bg">#f6170d</color>
+    <color name="black">#000000</color>
 </resources>

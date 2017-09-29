@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bernard.hollarena.Chat;
+import com.bernard.hollarena.R;
 import com.bernard.hollarena.model.UserDetails;
 
 import java.util.List;
@@ -25,7 +26,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new UserViewHolder(LayoutInflater.from(parent.getContext()).inflate(com.bernard.hollarena.R.layout.view_item,parent,false));
+        return new UserViewHolder(LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.layout_all_users,parent,false));
     }
 
     @Override
@@ -37,7 +39,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             public void onClick(View v) {
                 Context c = v.getContext();
                 Intent intent = new Intent(c, Chat.class);
-                UserDetails.chatWith = list.get(pos);
+//                UserDetails.chatWith = list.get(pos);
 
                 c.startActivity(intent);
 
@@ -55,7 +57,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         TextView textname;
         public UserViewHolder(View itemView) {
             super(itemView);
-            textname = (TextView) itemView.findViewById(com.bernard.hollarena.R.id.text_name);
+            textname = (TextView) itemView.findViewById(R.id.all_user_name);
         }
     }
 
